@@ -1,0 +1,121 @@
+# Mihomo 基础配置文件
+# 用于订阅转换平台的基础设置模板
+
+# 全局配置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+allow-lan: true
+bind-address: "*"
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+log-level: warning
+find-process-mode: 'off'
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 30
+disable-keep-alive: false
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# 控制面板
+external-controller: 0.0.0.0:9090
+secret: ""
+external-ui: ui
+external-ui-name: zashboard
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+
+# 嗅探配置
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - "+.v2ex.com"
+  skip-domain:
+    - "+.baidu.com"
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+    - "+.bytedance.com"
+    - "+.bytedance.net"
+    - "+.douyinvod.com"
+    - "+.qq.com"
+
+# TUN 模式配置
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+
+# DNS 配置
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: whitelist
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "+.alicdn.com"
+    - "+.office365.com"
+    - "+.outlook.com"
+    - "x-ssl.ls.apple.com"
+    - "+.bytedance.com"
+    - "+.bytedance.net"
+    - "+.douyinvod.com"
+    - "+.ls.apple.com"
+    - "+.ai.apple.com"
+    - "+.p-gw.ai.apple.com"
+    - "+.p-gw-prd.ai.apple.com"
+    - "+.ai-cdn.apple.com"
+    - "+.apple-relay.apple.com"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    "geosite:cn":
+      - 223.5.5.5
+      - 119.29.29.29
+    "geosite:geolocation-!cn":
+      - https://8.8.8.8/dns-query
+      - https://1.1.1.1/dns-query
+    "+.tv.apple.com":
+      - https://8.8.8.8/dns-query
+      - https://1.1.1.1/dns-query
+    "+.appletv.com":
+      - https://8.8.8.8/dns-query
+      - https://1.1.1.1/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+    ipcidr:
+      - 240.0.0.0/4
